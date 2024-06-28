@@ -1,0 +1,10 @@
+{
+  "models": {
+    "gemma": "gemma-2b-it-q4_k_m.gguf",
+    "llama": "Meta-Llama-3-8B-Instruct.Q4_0.gguf",
+    "mistral": "mistral-7b-openorca.gguf2.Q4_0.gguf",
+    "phi-3": "Phi-3-mini-4k-instruct.Q4_0.gguf"
+  },
+  "model": "gemma",
+  "vectore_store": "OPENNEP_VECTOR_STORE"
+}

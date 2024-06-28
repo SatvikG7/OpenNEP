@@ -1,0 +1,48 @@
+# EditorConfig helps maintain consistent coding styles for multiple developers
+# working on the same project across various editors and IDEs.
+
+# root = true indicates that this is the root configuration file
+root = true
+
+# All files
+[*]
+# Indent style: tabs or spaces
+indent_style = space
+# Indent size: number of spaces used per indent level
+indent_size = 4
+# Tab width: the width of a tab character (if using tabs for indentation)
+tab_width = 4
+# End of line character: can be lf, cr, or crlf
+end_of_line = lf
+# Charset: file encoding (utf-8, utf-16, etc.)
+charset = utf-8
+# Insert a newline (or not) at the end of a file
+insert_final_newline = true
+# Trim any trailing whitespace characters
+trim_trailing_whitespace = true
+
+# Markdown files
+[*.md]
+# Use spaces for indentation in Markdown files
+indent_style = space
+# Use 2 spaces per indent level
+indent_size = 2
+# Do not trim trailing whitespace in Markdown files
+trim_trailing_whitespace = false
+
+# JSON files
+[*.json]
+# Use spaces for indentation in JSON files
+indent_style = space
+# Use 2 spaces per indent level in JSON files
+indent_size = 2
+
+# Python files
+[*.py]
+# Use spaces for indentation in Python files
+indent_style = space
+# Use 4 spaces per indent level in Python files
+indent_size = 4
+# Follow the PEP 8 guideline for the maximum line length
+max_line_length = 79
+
