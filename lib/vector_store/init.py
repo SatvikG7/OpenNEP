@@ -27,8 +27,8 @@ def create_vector_store(embeddings: HuggingFaceEmbeddings) -> FAISS:
     bulk = load_documents()
     text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
         model_name="gpt-4",
-        chunk_size=200,
-        chunk_overlap=20,
+        chunk_size=248,
+        chunk_overlap=32,
     )
     documents = text_splitter.split_documents(bulk)
     vector_store = FAISS.from_documents(embedding=embeddings, documents=documents)

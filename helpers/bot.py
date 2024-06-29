@@ -2,7 +2,7 @@ from time import time
 from colorama import Fore, Style
 from langchain_core.vectorstores import VectorStoreRetriever
 from langchain_community.llms.gpt4all import GPT4All
-from helpers.prompts.default import get_prompt
+from helpers.prompts import claude_qna_prompt_template, default
 
 
 def run(llm: GPT4All, retriever: VectorStoreRetriever) -> None:
@@ -17,13 +17,23 @@ def run(llm: GPT4All, retriever: VectorStoreRetriever) -> None:
     Returns:
         None
     """
+
+    print(
+        Fore.CYAN
+        + "Chatbot initialized successfully! type exit to quit."
+        + Style.RESET_ALL
+    )
+    print("-" * 100)
+
     while True:
         query_text = input(Style.BRIGHT + Fore.BLUE + "Question: ")
-        if(query_text == "exit"):
+        if query_text == "exit":
             break
         results = retriever.invoke(query_text)
         context_text = "\n---\n".join([doc.page_content for doc in results])
-        prompt = get_prompt(question=query_text, context=context_text)
+        prompt = default.get_prompt(
+            question=query_text, context=context_text
+        )
 
         start = time()
         response = llm.invoke(prompt)
@@ -36,5 +46,5 @@ def run(llm: GPT4All, retriever: VectorStoreRetriever) -> None:
         print(Fore.LIGHTRED_EX + f"Time taken: {time() - start:.2f}s" + Style.RESET_ALL)
         print("-" * 100)
 
-    print("Exiting bot...")
+    print(Style.DIM + Fore.YELLOW + "Exiting bot..." + Style.RESET_ALL)
     return

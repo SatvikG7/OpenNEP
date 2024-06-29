@@ -9,6 +9,6 @@ def load_documents() -> list[Document]:
     Returns:
         list[Document]: A list of Document objects loaded from the directory.
     """
-    loader = DirectoryLoader("./data/", show_progress=True, use_multithreading=True)
+    loader = DirectoryLoader("./data/", show_progress=True, use_multithreading=True, max_concurrency=12)
     docs = loader.load()
     return docs
