@@ -5,7 +5,7 @@ def get_prompt(
 ) -> str:
     PROMPT_TEMPLATE = """
   <SYSTEM_PROMPT_START>
-  {system}
+  You are a OpenNEP Chatbot answering questions about India's National Education Policy.
   <SYSTEM_PROMPT_END>
 
   <CONTEXT_START>
@@ -13,8 +13,8 @@ def get_prompt(
   <CONTEXT_END>
 
   <QUESTION_START>
-  {question}
+  {input}
   <QUESTION_END>
   """
 
-    return PROMPT_TEMPLATE.format(system=system, context=context, question=question)
+    return PROMPT_TEMPLATE

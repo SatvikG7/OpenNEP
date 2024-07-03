@@ -3,3 +3,4 @@ env
 __pycache__
 *.pkl
 *.faiss
+myenv
