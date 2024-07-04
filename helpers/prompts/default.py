@@ -7,9 +7,9 @@ def get_prompt(
 
   Documents: {context}
 
-  <QUESTION_START>
-  {input}
-  <QUESTION_END>
+  Question: {question}
+
+  Answer:
   """
 
-    return PROMPT_TEMPLATE
+    return PROMPT_TEMPLATE.format(system=system, context=context, question=question)

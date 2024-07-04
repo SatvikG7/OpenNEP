@@ -19,7 +19,7 @@ vector_store = get_vector_store(embeddings=embeddindgs_model)
 retriever = get_retriever(vector_store=vector_store, search_type="similarity", k=3)
 
 genai.configure(
-    api_key="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    api_key="xxxxxxxxxxxxxxxxxxxxxxx",
 )
 
 generation_config = genai.GenerationConfig(
@@ -38,7 +38,6 @@ model = genai.GenerativeModel(
 
 chat_session = model.start_chat(history=[])
 
-
 # post request to /ask endpoint with question in body to get answer from model
 @app.route("/ask", methods=["POST"])
 def ask():
@@ -46,10 +45,11 @@ def ask():
     results = retriever.invoke(question)
     context_text = "\n---\n".join([doc.page_content for doc in results])
     prompt = default.get_prompt(question=question, context=context_text)
+    # print(prompt)
     response = chat_session.send_message(prompt)
     sources = [doc.metadata.get("source", None) for doc in results]
     return jsonify({"response": response.text, "sources": sources})
 
 
 if __name__ == "__main__":
-    app.run(debug=False, port=5000)
+    app.run(debug=False, port=5678)
