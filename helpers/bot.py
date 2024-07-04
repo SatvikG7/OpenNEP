@@ -1,7 +1,7 @@
 from time import time
 from colorama import Fore, Style
 from langchain_core.vectorstores import VectorStoreRetriever
-from langchain_community.llms.gpt4all import GPT4All
+from google.generativeai import GenerativeModel
 from helpers.prompts import claude_qna_prompt_template, default
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -11,7 +11,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.history import RunnableWithMessageHistory
 
 
-def run(llm: GPT4All, retriever: VectorStoreRetriever) -> None:
+def run(llm: GenerativeModel, retriever: VectorStoreRetriever) -> None:
     """
     Run the bot by continuously taking user input, retrieving relevant documents,
     generating a prompt, and invoking the language model to get a response.
@@ -45,8 +45,10 @@ def run(llm: GPT4All, retriever: VectorStoreRetriever) -> None:
         + Style.RESET_ALL
     )
     print("-" * 100)
-    store = {}
-    session_id = "default"
+    chat_session = llm.start_chat(
+        history=[
+        ]
+    )
 
     def get_session_history(session_id: str) -> BaseChatMessageHistory:
         if session_id not in store:
@@ -81,13 +83,9 @@ def run(llm: GPT4All, retriever: VectorStoreRetriever) -> None:
             output_messages_key="answer",
         )
         start = time()
-        response = conversational_rag_chain.invoke(
-            {"input": query_text, "context": context_text},
-            config={
-                "configurable": {"session_id": session_id}
-            },  # constructs a key "abc123" in `store`.
-        )["answer"]
-        formatted_response = f"Response: {response}"
+        response = chat_session.send_message(prompt)
+
+        formatted_response = f"Response: {response.text}"
         print(Style.BRIGHT + Fore.GREEN + formatted_response + Style.RESET_ALL)
         sources = [doc.metadata.get("source", None) for doc in results]
         formatted_sources = f"Sources: {sources}"
