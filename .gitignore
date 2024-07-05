@@ -1,6 +1,6 @@
 models
 env
 __pycache__
-*.pkl
-*.faiss
+# *.pkl
+# *.faiss
 myenv
