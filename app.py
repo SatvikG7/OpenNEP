@@ -38,6 +38,10 @@ model = genai.GenerativeModel(
 
 chat_session = model.start_chat(history=[])
 
+@app.route("/")
+def index():
+    return jsonify({"status": "ok"})
+
 # post request to /ask endpoint with question in body to get answer from model
 @app.route("/ask", methods=["POST"])
 def ask():
@@ -52,4 +56,4 @@ def ask():
 
 
 if __name__ == "__main__":
-    app.run(debug=False, port=5678)
+    app.run(debug=False)
