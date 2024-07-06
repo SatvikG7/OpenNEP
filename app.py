@@ -5,12 +5,13 @@ from flask import Flask, request, jsonify
 from lib.embeddings import initialize_embeddings_model
 from lib.vector_store.init import get_vector_store
 from lib.vector_store.retriever import get_retriever
-from helpers.prompts import claude_qna_prompt_template, default
+from helpers.prompts import prod
 
 import google.generativeai as genai
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)
 
 embeddindgs_model = initialize_embeddings_model(
     model_name="sentence-transformers/multi-qa-mpnet-base-dot-v1"
@@ -19,7 +20,7 @@ vector_store = get_vector_store(embeddings=embeddindgs_model)
 retriever = get_retriever(vector_store=vector_store, search_type="similarity", k=3)
 
 genai.configure(
-    api_key="xxxxxxxxxxxxxxxxxxxxxxx",
+    api_key="AIzaSyCsxb8J7Dp2pV21hmgnw3_WPPh6KYS_rbM",
 )
 
 generation_config = genai.GenerationConfig(
@@ -38,9 +39,11 @@ model = genai.GenerativeModel(
 
 chat_session = model.start_chat(history=[])
 
+
 @app.route("/")
 def index():
     return jsonify({"status": "ok"})
+
 
 # post request to /ask endpoint with question in body to get answer from model
 @app.route("/ask", methods=["POST"])
@@ -48,7 +51,7 @@ def ask():
     question = request.json["question"]  # type: ignore
     results = retriever.invoke(question)
     context_text = "\n---\n".join([doc.page_content for doc in results])
-    prompt = default.get_prompt(question=question, context=context_text)
+    prompt = prod.get_prompt(question=question, context=context_text)
     # print(prompt)
     response = chat_session.send_message(prompt)
     sources = [doc.metadata.get("source", None) for doc in results]
@@ -56,4 +59,4 @@ def ask():
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)

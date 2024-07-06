@@ -1,4 +1,5 @@
 from os import path
+from httpx import get
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 
@@ -23,13 +24,21 @@ def check_vector_store() -> bool:
         return False
 
 
-def create_vector_store(embeddings: HuggingFaceEmbeddings) -> FAISS:
-    bulk = load_documents()
-    text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
-        model_name="gpt-4",
+def get_text_splitter() -> RecursiveCharacterTextSplitter:
+    """
+    Get the text splitter.
+
+    Returns:
+        RecursiveCharacterTextSplitter: The text splitter.
+    """
+    return RecursiveCharacterTextSplitter.from_tiktoken_encoder(
         chunk_size=248,
         chunk_overlap=32,
     )
+
+def create_vector_store(embeddings: HuggingFaceEmbeddings) -> FAISS:
+    bulk = load_documents()
+    text_splitter = get_text_splitter()
     documents = text_splitter.split_documents(bulk)
     vector_store = FAISS.from_documents(embedding=embeddings, documents=documents)
     vector_store.save_local(VECTOR_STORE)

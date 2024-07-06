@@ -20,4 +20,4 @@ def get_model(local_path, device=None) -> GPT4All:
     if device == "cuda" and not torch.cuda.is_available():
         device = "cpu"
 
-    return GPT4All(model=local_path, device=device)  # type: ignore
+    return GPT4All(model=local_path, device=device, streaming=True)  # type: ignore
