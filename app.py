@@ -20,7 +20,7 @@ vector_store = get_vector_store(embeddings=embeddindgs_model)
 retriever = get_retriever(vector_store=vector_store, search_type="similarity", k=3)
 
 genai.configure(
-    api_key="AIzaSyCsxb8J7Dp2pV21hmgnw3_WPPh6KYS_rbM",
+    api_key="xxxxxxxxxxx",
 )
 
 generation_config = genai.GenerationConfig(
